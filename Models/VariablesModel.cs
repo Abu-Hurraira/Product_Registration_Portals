@@ -6,7 +6,7 @@ namespace Product_Registration_Portal.Models
         public string ProfileImage { get; set; }
 
         public int UserId { get; set; }   // PK (if needed)
-
+        // tedt
         // Basic info
         public string FirstName { get; set; }
         public string LastName { get; set; }
