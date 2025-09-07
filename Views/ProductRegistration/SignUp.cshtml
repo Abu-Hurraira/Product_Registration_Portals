@@ -1,0 +1,72 @@
+@model Product_Registration_Portal.Models.User
+@{
+    ViewBag.Title = "Sign Up";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="auth-card">
+    <h3 class="fw-bold mb-2 text-center">Create an Account</h3>
+    <p class="text-center mb-4">Fill in the details to register.</p>
+
+    @using (Html.BeginForm("SignUp", "ProductRegistration", FormMethod.Post))
+    {
+        <div class="mb-3">@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First Name", required = "required" })</div>
+        <div class="mb-3">@Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last Name", required = "required" })</div>
+        <div class="mb-3">@Html.TextBoxFor(m => m.Email, new { @type = "email", @class = "form-control", placeholder = "E-mail", required = "required" })</div>
+        <div class="mb-3">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password", required = "required", maxlength = "8" })
+            @if (ViewBag.Error != null)
+            {<div class="text-danger small mt-1">@ViewBag.Error</div>}
+        </div>
+        <div class="mb-3">@Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone" })</div>
+        <div class="mb-3">@Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })</div>
+        <div class="mb-3">@Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "City" })</div>
+        <div class="mb-3">@Html.TextBoxFor(m => m.Country, new { @class = "form-control", placeholder = "Country" })</div>
+        <div class="mb-3">
+            @Html.DropDownListFor(m => m.Role, new SelectList(new[]
+            {
+                new { Value = "User", Text = "User" },
+                new { Value = "Admin", Text = "Admin" }
+            }, "Value", "Text"), "Select Role", new { @class = "form-control", required = "required" })
+        </div>
+        <div class="form-check mb-3">
+            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", @checked = "checked" })
+            <label class="form-check-label">Active Account</label>
+        </div>
+        <button type="submit" class="btn-theme w-100">Sign Up</button>
+
+        
+    }
+</div>
+
+<!-- Toast Notifications -->
+<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;">
+    @if (TempData["Message"] != null)
+    {
+        <div class="toast align-items-center text-bg-success border-0 show">
+            <div class="d-flex">
+                <div class="toast-body">@TempData["Message"]</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="toast align-items-center text-bg-danger border-0 show">
+            <div class="d-flex">
+                <div class="toast-body">@TempData["Error"]</div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        toastElList.map(function (toastEl) {
+            var toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+            toast.show();
+        });
+    });
+</script>

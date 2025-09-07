@@ -1,0 +1,215 @@
+@model Product_Registration_Portal.Models.ProductModel 
+@{
+    ViewBag.Title = "Product Registration";
+    Layout = null;
+
+    bool isEdit = Model != null && Model.ProductID > 0;
+    string formTitle = isEdit ? "Update Product" : "Register Product";
+    string action = isEdit ? "UpdateProduct" : "ProductRegister";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<html>
+<body>
+    <div class="row g-4">
+        <!-- Left: Form -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    @using (Html.BeginForm(action, "ProductRegistration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.ProductID)
+                        @Html.HiddenFor(m => m.ImagePath)
+                        @Html.HiddenFor(m => m.HoverImagePath)
+
+                        <h5 class="mb-3">@formTitle</h5>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Title, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Title" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+                            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 3 })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.Label("Category", new { @class = "form-label" })
+                            @Html.DropDownListFor(
+                                m => m.CategoryID,
+                                (IEnumerable<SelectListItem>)ViewBag.Categories,
+                                "-- Select Category --",
+                                new { @class = "form-select" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Price, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", step = "0.01" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.StockQuantity, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.StockQuantity, new { @class = "form-control", type = "number", min = "0" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Brand, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Brand, new { @class = "form-control" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Rating, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Rating, new { @class = "form-control", type = "number", step = "0.01", min = "0", max = "5" })
+                        </div>
+
+                        <!-- Main Image -->
+                        <div class="mb-3">
+                            <label class="form-label">Product Image</label>
+                            <input type="file" name="ImageFile" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp" />
+                            @if (!string.IsNullOrWhiteSpace(Model?.ImagePath))
+                            {
+                                <img src="@Url.Content(Model.ImagePath)" class="mt-2 rounded" style="width:80px;height:80px;object-fit:cover;" />
+                            }
+                        </div>
+
+                        <!-- Hover Image -->
+                        <div class="mb-3">
+                            <label class="form-label">Hover Image</label>
+                            <input type="file" name="HoverImageFile" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp" />
+                            @if (!string.IsNullOrWhiteSpace(Model?.HoverImagePath))
+                            {
+                                <img src="@Url.Content(Model.HoverImagePath)" class="mt-2 rounded" style="width:80px;height:80px;object-fit:cover;" />
+                            }
+                        </div>
+
+                        <div class="form-check mb-3">
+                            @Html.CheckBoxFor(m => m.IsProductActive, new { @class = "form-check-input" })
+                            <label class="form-check-label">Is Active</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            @(isEdit ? "Update" : "Register")
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Grid -->
+        <div class="col-md-8">
+            <div class="mb-3 d-flex justify-content-end gap-2">
+                <a href="@Url.Action("UserDashboard", "ProductRegistration")" class="btn btn-primary mt-3">UserDashboard</a>
+            </div>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="mb-3">Products</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Main Image</th>
+                                    <th>Hover Image</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Brand</th>
+                                    <th>Rating</th>
+                                    <th>CreatedAt</th>
+                                    <th>UpdatedAt</th>
+                                    <th>IsActive</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Products != null)
+                                {
+                                    foreach (var p in (IEnumerable<Product_Registration_Portal.Models.ProductModel>)ViewBag.Products)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (!string.IsNullOrWhiteSpace(p.ImagePath))
+                                                {
+                                                    <img src="@Url.Content(p.ImagePath)" style="width:56px;height:56px;object-fit:cover;border-radius:6px;" />
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (!string.IsNullOrWhiteSpace(p.HoverImagePath))
+                                                {
+                                                    <img src="@Url.Content(p.HoverImagePath)" style="width:56px;height:56px;object-fit:cover;border-radius:6px;" />
+                                                }
+                                            </td>
+                                            <td>
+                                                <div>@p.Title</div>
+                                                @if (p.StockQuantity < 5)
+                                                {
+                                                    <div class="text-danger" style="font-size: 0.75rem;">(Low Stock)</div>
+                                                }
+                                            </td>
+                                            <td>@p.CategoryName</td>
+                                            <td>@p.Price.ToString("0.00")</td>
+                                            <td>@p.StockQuantity</td>
+                                            <td>@p.Brand</td>
+                                            <td>@(p.Rating.HasValue ? p.Rating.Value.ToString("0.00") : "-")</td>
+                                            <td>@p.CreatedAt.ToString("dd-MM-yyyy HH:mm")</td>
+                                            <td>@(p.UpdatedAt.HasValue ? p.UpdatedAt.Value.ToString("dd-MM-yyyy HH:mm") : "-")</td>
+                                            <td>@(p.IsProductActive ? "Yes" : "No")</td>
+                                            <td class="d-flex text-center gap-2">
+                                                <a href="@Url.Action("EditProduct", "ProductRegistration", new { id = p.ProductID })" class="btn btn-warning btn-sm flex-fill">Edit</a>
+                                                <a href="@Url.Action("DeleteProduct", "ProductRegistration", new { id = p.ProductID })" class="btn btn-danger btn-sm flex-fill">Delete</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="12" class="text-center">No products found.</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-center gap-2">
+                    <a href="@Url.Action("LowStockProducts", "ProductRegistration")" class="btn btn-danger mt-3">View Low Stock Products</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;">
+        @if (TempData["Message"] != null)
+        {
+            <div class="toast align-items-center text-bg-success border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">@TempData["Message"]</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="toast align-items-center text-bg-danger border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">@TempData["Error"]</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toastEl = document.querySelector(".toast");
+            if (toastEl) {
+                const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+                toast.show();
+            }
+        });
+    </script>
+</body>
+</html>

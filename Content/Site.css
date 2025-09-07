@@ -1,0 +1,160 @@
+﻿/* =====================
+   Global Styles
+===================== */
+body {
+    background: #2E1F1B;
+    background: linear-gradient(135deg, #2E1F1B 0%, #5E4B43 100%);
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    opacity: 1; /* Always visible */
+}
+
+
+/* =====================
+   Navbar
+===================== */
+.navbar-gradient {
+    background: linear-gradient(90deg, #2E1F1B, #5E4B43);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.navbar {
+    padding: 0.8rem 1rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+    color: #fff !important;
+}
+
+.nav-link {
+    color: #fff !important;
+    font-weight: 500;
+    margin-left: 15px;
+    transition: 0.3s;
+}
+
+    .nav-link:hover {
+        color: #ffdede !important;
+    }
+
+/* =====================
+   Footer
+===================== */
+footer {
+    background: linear-gradient(90deg, #2E1F1B, #5E4B43);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    font-size: 0.9rem;
+    padding: 1.2rem 0;
+    text-align: center;
+}
+
+/* =====================
+   Main Content
+===================== */
+main {
+    min-height: 75vh;
+    padding: 2rem 0;
+}
+
+/* =====================
+   Auth Card
+===================== */
+.auth-card {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 2.5rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto; /* Center horizontally */
+    color: #fff;
+}
+
+    .auth-card h3,
+    .auth-card p {
+        color: #fff;
+    }
+
+/* =====================
+   Form Controls
+===================== */
+.form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: #fff;
+}
+
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.2);
+        outline: none;
+        box-shadow: 0 0 0 2px #2E1F1B;
+    }
+
+::placeholder {
+    color: #ddd;
+}
+
+/* =====================
+   Buttons
+===================== */
+.btn-theme {
+    background: linear-gradient(90deg, #2E1F1B, #5E4B43);
+    border: none;
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: 0.3s ease;
+}
+
+    .btn-theme:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+/* =====================
+   Links
+===================== */
+a {
+    color: #2E1F1B;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #5E4B43;
+    }
+
+/* =====================
+   Dashboard Table
+===================== */
+.custom-table {
+    background-color: transparent !important;
+    border-collapse: collapse;
+    width: 100%;
+    color: #fff; /* keep text visible */
+}
+
+    .custom-table th,
+    .custom-table td {
+        border: 1px solid #ffffff; /* white borders */
+        background-color: transparent !important; /* remove black fill */
+        padding: 0.75rem;
+        text-align: left;
+    }
+
+    .custom-table th {
+        font-weight: 600;
+    }

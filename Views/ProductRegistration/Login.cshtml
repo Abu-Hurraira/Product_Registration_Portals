@@ -1,0 +1,57 @@
+@model Product_Registration_Portal.Models.User
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="auth-card">
+    <h3 class="fw-bold text-center mb-2">Welcome Back</h3>
+    <p class="text-center mb-4">Login to continue</p>
+
+    <form method="post" action="/ProductRegistration/Login">
+        <div class="mb-3">
+            <input type="email" name="email" class="form-control" placeholder="E-mail" required />
+        </div>
+        <div class="mb-3">
+            <input type="password" name="password" class="form-control" placeholder="Password" maxlength="8" required />
+            @if (ViewBag.Error != null)
+            {
+                <div class="text-danger small mt-1">@ViewBag.Error</div>
+            }
+        </div>
+        <button type="submit" class="btn-theme w-100">Login</button>
+        
+    </form>
+</div>
+
+<!-- Toast Notifications -->
+<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;">
+    @if (TempData["Message"] != null)
+    {
+        <div class="toast align-items-center text-bg-success border-0 show">
+            <div class="d-flex">
+                <div class="toast-body">@TempData["Message"]</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="toast align-items-center text-bg-danger border-0 show">
+            <div class="d-flex">
+                <div class="toast-body">@TempData["Error"]</div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        toastElList.map(function (toastEl) {
+            var toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+            toast.show();
+        });
+    });
+</script>

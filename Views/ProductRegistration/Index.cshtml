@@ -1,0 +1,39 @@
+@model List<Product_Registration_Portal.Models.ProductModel>
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Latest Products</h2>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var product in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="@Url.Content(product.ImagePath ?? "~/Content/images/no-image.png")"
+                             class="card-img-top" alt="@product.Title"
+                             style="height:200px; object-fit:cover;" />
+
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Title</h5>
+                            <p class="card-text text-muted">@product.Brand</p>
+                            <p class="fw-bold">Rs. @product.Price</p>
+                        </div>
+
+                        <div class="card-footer text-center">
+                            <button class="btn btn-sm btn-primary">View</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No products available.</p>
+        }
+    </div>
+</div>

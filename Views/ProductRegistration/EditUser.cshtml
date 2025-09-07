@@ -1,0 +1,105 @@
+﻿@model Product_Registration_Portal.Models.User
+@{
+    ViewBag.Title = "Edit User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Edit User</h2>
+    <hr />
+
+    @using (Html.BeginForm("EditUser", "ProductRegistration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.UserId)
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.FirstName)
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.FirstName)
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.LastName)
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LastName)
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Phone)
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.City)
+            @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Country)
+            @Html.TextBoxFor(m => m.Country, new { @class = "form-control" })
+        </div>
+
+        <div class="mb-3">
+            @Html.DropDownListFor(m => m.Role, new SelectList(new[]
+            {
+                new { Value = "User", Text = "User" },
+                new { Value = "Admin", Text = "Admin" }
+            }, "Value", "Text", Model.Role), "Select Role",
+            new { @class = "form-control", required = "required" })
+        </div>
+
+        <!-- ✅ IsActive Checkbox -->
+        <div class="form-check mb-3">
+            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+            @Html.LabelFor(m => m.IsActive, new { @class = "form-check-label" })
+        </div>
+
+        <div class="mb-3">
+            <label>Profile Image</label><br />
+            <img src="@Url.Content(string.IsNullOrEmpty(Model.ProfileImage)
+                ? "~/Content/images/default-profile.png"
+                : Model.ProfileImage)"
+                 style="width:80px; height:80px; object-fit:cover;"
+                 class="rounded-circle mb-2" />
+            <input type="file" name="ProfileImageFile" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="@Url.Action("UserDashboard", "ProductRegistration")" class="btn btn-secondary">Cancel</a>
+    }
+</div>
+
+<!-- ✅ Success Toast -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="toast align-items-center text-bg-success border-0 show" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @TempData["SuccessMessage"]
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+            toastElList.map(function (toastEl) {
+                var toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+                toast.show();
+            });
+        });
+    </script>
+}
